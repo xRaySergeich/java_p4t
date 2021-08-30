@@ -14,7 +14,7 @@ public class GroupCreationTests {
     System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
     wd = new ChromeDriver();
     wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    wd.get("http://localhost/addressbook/edit.php");
+    wd.get("http://localhost/addressbook");
     login("admin", "secret");
 
   }

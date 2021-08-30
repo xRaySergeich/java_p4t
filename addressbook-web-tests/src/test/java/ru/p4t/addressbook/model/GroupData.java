@@ -1,4 +1,4 @@
-package ru.p4t.addressbook;
+package ru.p4t.addressbook.model;
 
 public class GroupData {
   private final String name;

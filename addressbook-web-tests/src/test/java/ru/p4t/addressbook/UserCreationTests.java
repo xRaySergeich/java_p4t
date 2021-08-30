@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.Select;
 public class UserCreationTests {
   private WebDriver wd;
 
-  @BeforeClass(alwaysRun = true)
+  @BeforeMethod(alwaysRun = true)
   public void setUp() throws Exception {
     System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
     wd = new ChromeDriver();
@@ -113,7 +113,7 @@ public class UserCreationTests {
 
   }
 
-  @AfterClass(alwaysRun = true)
+  @AfterMethod(alwaysRun = true)
   public void tearDown() throws Exception {
     wd.quit();
   }

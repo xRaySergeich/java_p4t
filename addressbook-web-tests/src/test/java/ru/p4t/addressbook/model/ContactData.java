@@ -1,6 +1,6 @@
 package ru.p4t.addressbook.model;
 
-public class UserData {
+public class ContactData {
   private final String firstname;
   private final String middlename;
   private final String lastname;
@@ -28,7 +28,7 @@ public class UserData {
   private final String phone2;
   private final String notes;
 
-  public UserData(String firstname, String middlename, String lastname, String nickname, String avatarFileName, String company, String title, String address, String homePhone, String mobilePhone, String workPhone, String fax, String email, String email2, String email3, String homepage, String bday, String bmonth, String byear, String aday, String amonth, String ayear, String group, String address2, String phone2, String Notes) {
+  public ContactData(String firstname, String middlename, String lastname, String nickname, String avatarFileName, String company, String title, String address, String homePhone, String mobilePhone, String workPhone, String fax, String email, String email2, String email3, String homepage, String bday, String bmonth, String byear, String aday, String amonth, String ayear, String group, String address2, String phone2, String Notes) {
     this.firstname = firstname;
     this.middlename = middlename;
     this.lastname = lastname;

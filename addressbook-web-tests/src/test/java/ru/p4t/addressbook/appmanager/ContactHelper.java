@@ -46,15 +46,32 @@ public class ContactHelper extends HelperBase {
     select(By.name("amonth"), contactData.getAmonth());
     type(By.name("ayear"), contactData.getAyear());
 
-    select(By.name("new_group"), contactData.getGroup());
+
     type(By.name("address2"), contactData.getAddress2());
     type(By.name("phone2"), contactData.getPhone2());
     type(By.name("notes"), contactData.getNotes());
 
   }
 
+  public void fillContactFormGroup(ContactData contactData) {
+    select(By.name("new_group"), contactData.getGroup());
+  }
+
   public void initContactCreation() {
     wd.get("http://localhost/addressbook/");
-    wd.findElement(By.linkText("add new")).click();
+    click(By.linkText("add new"));
+  }
+
+  public void selectContact() {
+    wd.get("http://localhost/addressbook/");
+    click(By.name("selected[]"));
+  }
+
+  public void initContactModification() {
+    click(By.xpath("//img[@alt='Edit']"));
+  }
+
+  public void submitContactModification() {
+    click(By.name("update"));
   }
 }

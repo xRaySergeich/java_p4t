@@ -64,12 +64,10 @@ public class ContactHelper extends HelperBase {
   }*/
 
   public void initContactCreation() {
-    wd.get("http://localhost/addressbook/");
     click(By.linkText("add new"));
   }
 
   public void selectContact() {
-    wd.get("http://localhost/addressbook/");
     click(By.name("selected[]"));
   }
 
@@ -87,5 +85,15 @@ public class ContactHelper extends HelperBase {
 
   public void submitContactDeletion() {
     wd.switchTo().alert().accept();
+  }
+
+  public void createContact(ContactData cd) {
+    initContactCreation();
+    fillContactForm(cd, true);
+    submitContactCreation();
+  }
+
+  public boolean isThereAContact() {
+    return isElementPresent(By.name("selected[]"));
   }
 }

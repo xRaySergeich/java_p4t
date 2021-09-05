@@ -2,6 +2,7 @@ package ru.p4t.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//input[@name='submit']"));
   }
 
-  public void fillContactForm(ContactData contactData) {
+  public void fillContactForm(ContactData contactData, boolean creation) {
     type(By.name("firstname"), contactData.getFirstname());
     type(By.name("middlename"), contactData.getMiddlename());
     type(By.name("lastname"), contactData.getLastname());
@@ -46,6 +47,11 @@ public class ContactHelper extends HelperBase {
     select(By.name("amonth"), contactData.getAmonth());
     type(By.name("ayear"), contactData.getAyear());
 
+    if (creation) {
+      select(By.name("new_group"), contactData.getGroup());
+    } else {
+      Assert.assertFalse(isElementPresent(By.name("new_group")));
+    }
 
     type(By.name("address2"), contactData.getAddress2());
     type(By.name("phone2"), contactData.getPhone2());
@@ -53,9 +59,9 @@ public class ContactHelper extends HelperBase {
 
   }
 
-  public void fillContactFormGroup(ContactData contactData) {
+  /*public void fillContactFormGroup(ContactData contactData) {
     select(By.name("new_group"), contactData.getGroup());
-  }
+  }*/
 
   public void initContactCreation() {
     wd.get("http://localhost/addressbook/");

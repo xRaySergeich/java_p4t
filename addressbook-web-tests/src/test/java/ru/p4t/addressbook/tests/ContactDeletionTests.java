@@ -3,7 +3,6 @@ package ru.p4t.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
-import ru.p4t.addressbook.model.GroupData;
 
 import java.util.List;
 
@@ -26,6 +25,7 @@ public class ContactDeletionTests extends TestBase {
     app.getContactHelper().selectContact(index);
     app.getContactHelper().initContactDeletion();
     app.getContactHelper().submitContactDeletion();
+    log.info("Удален контакт " + before.get(index));
     app.getNavigationHelper().gotoHomePage();
 
     List<ContactData> after = app.getContactHelper().getContactList();

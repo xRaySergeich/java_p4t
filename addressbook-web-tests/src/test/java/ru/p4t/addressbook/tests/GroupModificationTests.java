@@ -27,8 +27,10 @@ public class GroupModificationTests extends TestBase {
 
     app.getGroupHelper().fillGroupForm(modGroup);
     app.getGroupHelper().submitGroupModification();
+    log.info("Изменена группа, было " + before.get(index));
     app.getNavigationHelper().gotoGroupPage();
     List<GroupData> after = app.getGroupHelper().getGroupList();
+    log.info("Изменена группа, стало " + after.get(index));
     Assert.assertEquals(after.size(), before.size());
 
     before.remove(index);

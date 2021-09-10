@@ -1,6 +1,5 @@
 package ru.p4t.addressbook.tests;
 
-import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
@@ -20,6 +19,7 @@ public class ContactCreationTests extends TestBase {
     List<ContactData> before = app.getContactHelper().getContactList();
 
     app.getContactHelper().createContact(cd);
+    log.info("Добавлен контакт " + cd);
     app.getNavigationHelper().gotoHomePage();
 
     List<ContactData> after = app.getContactHelper().getContactList();

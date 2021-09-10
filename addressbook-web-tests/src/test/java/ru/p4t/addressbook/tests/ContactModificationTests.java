@@ -30,9 +30,11 @@ public class ContactModificationTests extends TestBase {
     app.getContactHelper().initContactModification(before.size() - 1);
     app.getContactHelper().fillContactForm(cdMod, false);
     app.getContactHelper().submitContactModification();
+    log.info("Изменен контакт, было " + before.get(index));
     app.getNavigationHelper().gotoHomePage();
 
     List<ContactData> after = app.getContactHelper().getContactList();
+    log.info("Изменен контакт, стало " + after.get(index));
     Assert.assertEquals(after.size(), before.size());
 
     before.remove(index);

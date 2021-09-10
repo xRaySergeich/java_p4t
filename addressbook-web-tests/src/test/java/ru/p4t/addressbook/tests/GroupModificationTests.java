@@ -16,9 +16,11 @@ public class GroupModificationTests extends TestBase {
     if (!app.getGroupHelper().isThereAGroup()) {
       app.getGroupHelper().createGroup(creationGroup);
     }
+
     List<GroupData> before = app.getGroupHelper().getGroupList();
     int index = before.size() - 1;
     app.getGroupHelper().selectGroup(index);
+
     app.getGroupHelper().initGroupModification();
 
     GroupData modGroup = new GroupData(before.get(index).getId(), "test4", "test5", "test6");

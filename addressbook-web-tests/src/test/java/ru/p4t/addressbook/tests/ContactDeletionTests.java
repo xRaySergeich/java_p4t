@@ -3,7 +3,6 @@ package ru.p4t.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
-import ru.p4t.addressbook.model.GroupData;
 
 public class ContactDeletionTests extends TestBase {
 
@@ -13,18 +12,18 @@ public class ContactDeletionTests extends TestBase {
 
     app.getNavigationHelper().gotoHomePage();
 
-    int before = app.getContactHelper().getGroupCount();
+    int before = app.getContactHelper().getContactCount();
 
     if (!app.getContactHelper().isThereAContact()) {
       app.getContactHelper().createContact(cd);
     }
     app.getNavigationHelper().gotoHomePage();
-    app.getContactHelper().selectContact();
+    app.getContactHelper().selectContact(before - 1);
     app.getContactHelper().initContactDeletion();
     app.getContactHelper().submitContactDeletion();
     app.getNavigationHelper().gotoHomePage();
 
-    int after = app.getContactHelper().getGroupCount();
+    int after = app.getContactHelper().getContactCount();
     Assert.assertEquals(after, before - 1);
   }
 }

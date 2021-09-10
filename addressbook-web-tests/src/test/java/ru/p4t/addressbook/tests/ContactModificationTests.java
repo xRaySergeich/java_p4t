@@ -13,19 +13,19 @@ public class ContactModificationTests extends TestBase {
 
     app.getNavigationHelper().gotoHomePage();
 
-    int before = app.getContactHelper().getGroupCount();
+    int before = app.getContactHelper().getContactCount();
 
     if (!app.getContactHelper().isThereAContact()) {
       app.getContactHelper().createContact(cdCreation);
     }
     app.getNavigationHelper().gotoHomePage();
-    app.getContactHelper().selectContact();
-    app.getContactHelper().initContactModification();
+    //app.getContactHelper().selectContact();
+    app.getContactHelper().initContactModification(before - 1);
     app.getContactHelper().fillContactForm(cdMod, false);
     app.getContactHelper().submitContactModification();
     app.getNavigationHelper().gotoHomePage();
 
-    int after = app.getContactHelper().getGroupCount();
+    int after = app.getContactHelper().getContactCount();
     Assert.assertEquals(after, before);
 
   }

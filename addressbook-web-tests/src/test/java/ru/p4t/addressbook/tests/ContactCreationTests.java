@@ -12,12 +12,12 @@ public class ContactCreationTests extends TestBase {
 
     app.getNavigationHelper().gotoHomePage();
 
-    int before = app.getContactHelper().getGroupCount();
+    int before = app.getContactHelper().getContactCount();
 
     app.getContactHelper().createContact(cd);
     app.getNavigationHelper().gotoHomePage();
 
-    int after = app.getContactHelper().getGroupCount();
+    int after = app.getContactHelper().getContactCount();
     Assert.assertEquals(after, before + 1);
   }
 

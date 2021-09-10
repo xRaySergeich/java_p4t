@@ -2,10 +2,12 @@ package ru.p4t.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
 
 import java.io.File;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -67,12 +69,12 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("add new"));
   }
 
-  public void selectContact() {
-    click(By.name("selected[]"));
+  public void selectContact(int index) {
+    list().get(index).click();
   }
 
-  public void initContactModification() {
-    click(By.xpath("//img[@alt='Edit']"));
+  public void initContactModification(int index) {
+    listEdit().get(index).click();
   }
 
   public void submitContactModification() {
@@ -97,7 +99,17 @@ public class ContactHelper extends HelperBase {
     return isElementPresent(By.name("selected[]"));
   }
 
-  public int getGroupCount() {
-    return wd.findElements(By.name("selected[]")).size();
+  public int getContactCount() {
+    return list().size();
   }
+
+  public List<WebElement> list () {
+    List<WebElement> list = wd.findElements(By.name("selected[]"));
+    return list;
+  }
+  public List<WebElement> listEdit () {
+    List<WebElement> list = wd.findElements(By.xpath("//img[@alt='Edit']"));
+    return list;
+  }
+
 }

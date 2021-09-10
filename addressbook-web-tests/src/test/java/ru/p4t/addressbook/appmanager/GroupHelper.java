@@ -9,6 +9,7 @@ public class GroupHelper extends HelperBase {
   public GroupHelper(WebDriver wd) {
     super(wd);
   }
+  public NavigationHelper navi = new NavigationHelper(wd);
 
   public void returnToGroupPage() {
     click(By.linkText("group page"));
@@ -48,10 +49,14 @@ public class GroupHelper extends HelperBase {
     initGroupCreation();
     fillGroupForm(group);
     submitGroupCreation();
-    returnToGroupPage();
+    navi.gotoGroupPage();
   }
 
   public boolean isThereAGroup() {
     return isElementPresent(By.name("selected[]"));
+  }
+
+  public int getGroupCount() {
+    return wd.findElements(By.name("selected[]")).size();
   }
 }

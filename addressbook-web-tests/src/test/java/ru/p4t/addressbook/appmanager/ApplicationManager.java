@@ -40,7 +40,7 @@ public class ApplicationManager {
     }
 
     wd.manage().deleteAllCookies();
-    wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
     wd.get("http://localhost/addressbook");
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);

@@ -28,7 +28,7 @@ public class ApplicationManager {
         wd = new FirefoxDriver();
         break;
       case BrowserType.CHROME:
-        System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\dev\\tools\\chromedriver_win32\\chromedriver.exe");
         wd = new ChromeDriver();
         break;
       case BrowserType.IE:

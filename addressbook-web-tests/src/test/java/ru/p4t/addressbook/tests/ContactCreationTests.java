@@ -14,15 +14,15 @@ public class ContactCreationTests extends TestBase {
     ContactData cd = new ContactData("Zorian", "Viktorovich", "Kazinsky", "Nutcracker", "anonymous.jpg", "Wizards, inc", "Some title", "Some address", "99922211", "77718882", "937557728", "993949587", "address1@ex.com", "address2@ex.com", "address3@ex.com", "http://localhost", "10", "August", "1955", "6", "April", "1999", "test1", "Some secondary address", "888899999", "Extremely important notes for test");
     ContactData cdAdd = new ContactData("Zorian", null,"Kazinsky",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null );
 
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().homePage();
 
-    List<ContactData> before = app.getContactHelper().getContactList();
+    List<ContactData> before = app.contact().list();
 
-    app.getContactHelper().createContact(cd);
+    app.contact().createContact(cd);
     log.info("Добавлен контакт " + cd);
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().homePage();
 
-    List<ContactData> after = app.getContactHelper().getContactList();
+    List<ContactData> after = app.contact().list();
     Assert.assertEquals(after.size(), before.size() + 1);
 
     log.info("before size " + before.size());

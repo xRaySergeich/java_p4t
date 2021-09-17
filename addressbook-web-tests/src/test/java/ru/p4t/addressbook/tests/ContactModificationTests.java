@@ -13,9 +13,9 @@ public class ContactModificationTests extends TestBase {
   @BeforeMethod
   public void ensurePreconditions () {
     ContactData cdCreation = new ContactData("Zorian", "Viktorovich", "Kazinsky", "Nutcracker", "anonymous.jpg", "Wizards, inc", "Some title", "Some address", "99922211", "77718882", "937557728", "993949587", "address1@ex.com", "address2@ex.com", "address3@ex.com", "http://localhost", "10", "August", "1955", "6", "April", "1999", "test1", "Some secondary address", "888899999", "Extremely important notes for test");
-    app.getNavigationHelper().gotoHomePage();
-    if (!app.getContactHelper().isThereAContact()) {
-      app.getContactHelper().createContact(cdCreation);
+    app.goTo().homePage();
+    if (app.contact().list().size() == 0) {
+      app.contact().createContact(cdCreation);
     }
   }
 
@@ -25,18 +25,13 @@ public class ContactModificationTests extends TestBase {
 
     ContactData cdModForCompare = new ContactData("Deimen", null, "Kazinsky", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
-    List<ContactData> before = app.getContactHelper().getContactList();
+    List<ContactData> before = app.contact().list();
+
     int index = before.size() - 1;
-    app.getContactHelper().selectContact(index);
+    app.contact().modify(cdMod, before, index);
 
-    app.getNavigationHelper().gotoHomePage();
-    app.getContactHelper().initContactModification(before.size() - 1);
-    app.getContactHelper().fillContactForm(cdMod, false);
-    app.getContactHelper().submitContactModification();
     log.info("Изменен контакт, было " + before.get(index));
-    app.getNavigationHelper().gotoHomePage();
-
-    List<ContactData> after = app.getContactHelper().getContactList();
+    List<ContactData> after = app.contact().list();
     log.info("Изменен контакт, стало " + after.get(index));
     Assert.assertEquals(after.size(), before.size());
 
@@ -48,4 +43,6 @@ public class ContactModificationTests extends TestBase {
     Assert.assertEquals(before, after);
 
   }
+
+
 }

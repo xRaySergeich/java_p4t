@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
-import ru.p4t.addressbook.model.GroupData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +15,8 @@ public class ContactHelper extends HelperBase {
   public ContactHelper(WebDriver wd) {
     super(wd);
   }
+
+  public NavigationHelper navi = new NavigationHelper(wd);
 
   public void submitContactCreation() {
     click(By.xpath("//input[@name='submit']"));
@@ -72,7 +73,7 @@ public class ContactHelper extends HelperBase {
   }
 
   public void selectContact(int index) {
-    list().get(index).click();
+    getList().get(index).click();
   }
 
   public void initContactModification(int index) {
@@ -97,15 +98,32 @@ public class ContactHelper extends HelperBase {
     submitContactCreation();
   }
 
+  public void modify(ContactData cdMod, List<ContactData> before, int index) {
+    selectContact(index);
+    navi.homePage();
+    initContactModification(before.size() - 1);
+    fillContactForm(cdMod, false);
+    submitContactModification();
+    navi.homePage();
+  }
+
+  public void delete(int index) {
+    navi.homePage();
+    selectContact(index);
+    initContactDeletion();
+    submitContactDeletion();
+    navi.homePage();
+  }
+
   public boolean isThereAContact() {
     return isElementPresent(By.name("selected[]"));
   }
 
   public int getContactCount() {
-    return list().size();
+    return getList().size();
   }
 
-  public List<WebElement> list () {
+  public List<WebElement> getList() {
     List<WebElement> list = wd.findElements(By.name("selected[]"));
     return list;
   }
@@ -114,7 +132,7 @@ public class ContactHelper extends HelperBase {
     return list;
   }
 
-  public List<ContactData> getContactList() {
+  public List<ContactData> list() {
     List<ContactData> contacts = new ArrayList<ContactData>();
     List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
     for (WebElement element : elements) {

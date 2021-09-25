@@ -11,7 +11,7 @@ public class GroupDeletionTests extends  TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() {
-    GroupData creationGroup = new GroupData("test1",null, null);
+    GroupData creationGroup = new GroupData().withName("test1");
     app.goTo().groupPage();
     if (app.group().list().size() == 0) {
       app.group().create(creationGroup);

@@ -30,9 +30,9 @@ public class ContactModificationTests extends TestBase {
     int index = before.size() - 1;
     app.contact().modify(cdMod, before, index);
 
-    log.info("Изменен контакт, было " + before.get(index));
+    log.info("изменен контакт, было " + before.get(index));
     List<ContactData> after = app.contact().list();
-    log.info("Изменен контакт, стало " + after.get(index));
+    log.info("изменен контакт, стало " + after.get(index));
     Assert.assertEquals(after.size(), before.size());
 
     before.remove(index);

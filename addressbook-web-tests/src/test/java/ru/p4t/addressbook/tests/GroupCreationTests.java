@@ -13,7 +13,7 @@ public class GroupCreationTests extends TestBase {
   public void testGroupCreation() throws Exception {
     app.goTo().groupPage();
     List<GroupData> before = app.group().list();
-    GroupData group = new GroupData("test1",null, null);
+    GroupData group = new GroupData().withName("test1");
     app.group().create(group);
     log.info("Добавлена группа " + group);
     app.goTo().groupPage();

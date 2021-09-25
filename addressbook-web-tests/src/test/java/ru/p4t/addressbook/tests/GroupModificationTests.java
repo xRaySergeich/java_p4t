@@ -1,20 +1,13 @@
 package ru.p4t.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.GroupData;
 import ru.p4t.addressbook.model.Groups;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class GroupModificationTests extends TestBase {
   @BeforeMethod
@@ -37,14 +30,13 @@ public class GroupModificationTests extends TestBase {
             .withFooter("test6");
 
     app.group().modify(group);
-    log.info("изменена группа, было " + modifiedGroup);
+    log.info("modified group, before " + modifiedGroup);
     Groups after = app.group().all();
-    log.info("изменена группа, стало " + group);
-    assertEquals(after.size(), before.size());
+    log.info("modified group, after " + group);
+    assertThat(after.size(),equalTo(before.size()));
 
     before.remove(modifiedGroup);
     before.add(group);
-    assertEquals(before, after);
     assertThat(after, equalTo(before.withModified(group, modifiedGroup)));
   }
 

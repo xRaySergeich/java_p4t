@@ -1,12 +1,11 @@
 package ru.p4t.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
+import ru.p4t.addressbook.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase {
 
@@ -42,23 +41,21 @@ public class ContactCreationTests extends TestBase {
 
     app.goTo().homePage();
 
-    Set<ContactData> before = app.contact().all();
+    Contacts before = app.contact().all();
 
     app.contact().createContact(cd);
-    log.info("Добавлен контакт " + cd);
+    log.info("added contact " + cd);
     app.goTo().homePage();
 
-    Set<ContactData> after = app.contact().all();
-    Assert.assertEquals(after.size(), before.size() + 1);
+    Contacts after = app.contact().all();
+    assertThat(after.size(), equalTo(before.size() + 1));
 
     log.info("before size " + before.size());
     log.info("after size " + after.size());
 
-    cd.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt());
-    before.add(cd);
+    assertThat(after, equalTo(before.withAdded(cd.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
     log.info("before value " + before);
     log.info("after value " + after);
-    Assert.assertEquals(before,after);
   }
 
 }

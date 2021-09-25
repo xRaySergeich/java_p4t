@@ -5,11 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
+import ru.p4t.addressbook.model.Contacts;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -64,10 +63,6 @@ public class ContactHelper extends HelperBase {
     type(By.name("notes"), contactData.getNotes());
 
   }
-
-  /*public void fillContactFormGroup(ContactData contactData) {
-    select(By.name("new_group"), contactData.getGroup());
-  }*/
 
   public void initContactCreation() {
     click(By.linkText("add new"));
@@ -133,8 +128,8 @@ public class ContactHelper extends HelperBase {
     return list;
   }
 
-  public Set<ContactData> all() {
-    Set<ContactData> contacts = new HashSet<ContactData>();
+  public Contacts all() {
+    Contacts contacts = new Contacts();
     List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
     for (WebElement element : elements) {
       String lastname = element.findElements(By.tagName("td")).get(1).getText();

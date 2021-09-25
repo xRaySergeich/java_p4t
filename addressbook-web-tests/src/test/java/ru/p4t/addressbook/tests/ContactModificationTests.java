@@ -1,13 +1,12 @@
 package ru.p4t.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
+import ru.p4t.addressbook.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactModificationTests extends TestBase {
 
@@ -49,12 +48,7 @@ public class ContactModificationTests extends TestBase {
   @Test
   public void testContactModification() throws Exception {
 
-
-    /*ContactData cdModForCompare = new ContactData()
-            .withFirstname("Deimen")
-            .withLastname("Kazinsky");*/
-
-    Set<ContactData> before = app.contact().all();
+    Contacts before = app.contact().all();
     ContactData modifiedContact = before.iterator().next();
 
     ContactData cdMod = new ContactData()
@@ -88,15 +82,14 @@ public class ContactModificationTests extends TestBase {
 
     app.contact().modify(cdMod);
 
-    log.info("изменен контакт, было " + modifiedContact);
-    Set<ContactData> after = app.contact().all();
-    log.info("изменен контакт, стало " + cdMod);
-    Assert.assertEquals(after.size(), before.size());
+    log.info("contact modified, before " + modifiedContact);
+    Contacts after = app.contact().all();
+    log.info("contact modified, after " + cdMod);
+    assertThat(after.size(), equalTo(before.size()));
 
     before.remove(modifiedContact);
     before.add(cdMod);
-    Assert.assertEquals(before, after);
-
+    assertThat(after, equalTo(before.withModified(cdMod, modifiedContact)));
   }
 
 

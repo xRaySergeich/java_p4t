@@ -7,6 +7,7 @@ import ru.p4t.addressbook.model.ContactData;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class ContactModificationTests extends TestBase {
 
@@ -40,14 +41,24 @@ public class ContactModificationTests extends TestBase {
             .withPhone2("888899999")
             .withNotes("Extremely important notes for test");
     app.goTo().homePage();
-    if (app.contact().list().size() == 0) {
+    if (app.contact().all().size() == 0) {
       app.contact().createContact(cdCreation);
     }
   }
 
   @Test
   public void testContactModification() throws Exception {
+
+
+    /*ContactData cdModForCompare = new ContactData()
+            .withFirstname("Deimen")
+            .withLastname("Kazinsky");*/
+
+    Set<ContactData> before = app.contact().all();
+    ContactData modifiedContact = before.iterator().next();
+
     ContactData cdMod = new ContactData()
+            .withId(modifiedContact.getId())
             .withFirstname("Deimen")
             .withMiddlename("Petrovich")
             .withLastname("Kazinsky")
@@ -75,25 +86,15 @@ public class ContactModificationTests extends TestBase {
             .withPhone2("888899999")
             .withNotes("Extremely important notes for modification test");
 
-    ContactData cdModForCompare = new ContactData()
-            .withFirstname("Deimen")
-            .withLastname("Kazinsky");
+    app.contact().modify(cdMod);
 
-    List<ContactData> before = app.contact().list();
-
-    int index = before.size() - 1;
-    app.contact().modify(cdMod, before, index);
-
-    log.info("изменен контакт, было " + before.get(index));
-    List<ContactData> after = app.contact().list();
-    log.info("изменен контакт, стало " + after.get(index));
+    log.info("изменен контакт, было " + modifiedContact);
+    Set<ContactData> after = app.contact().all();
+    log.info("изменен контакт, стало " + cdMod);
     Assert.assertEquals(after.size(), before.size());
 
-    before.remove(index);
-    before.add(cdModForCompare);
-    Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(),g2.getId());
-    before.sort(byId);
-    after.sort(byId);
+    before.remove(modifiedContact);
+    before.add(cdMod);
     Assert.assertEquals(before, after);
 
   }

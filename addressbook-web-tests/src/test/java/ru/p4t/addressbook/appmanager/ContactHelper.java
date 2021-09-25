@@ -7,8 +7,9 @@ import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -72,12 +73,12 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("add new"));
   }
 
-  public void selectContact(int index) {
-    getList().get(index).click();
+  public void selectContactById(int id) {
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
   }
 
-  public void initContactModification(int index) {
-    listEdit().get(index).click();
+  public void initContactModification(int id) {
+    wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
   }
 
   public void submitContactModification() {
@@ -98,18 +99,18 @@ public class ContactHelper extends HelperBase {
     submitContactCreation();
   }
 
-  public void modify(ContactData cdMod, List<ContactData> before, int index) {
-    selectContact(index);
+  public void modify(ContactData cdMod) {
+    selectContactById(cdMod.getId());
     navi.homePage();
-    initContactModification(before.size() - 1);
+    initContactModification(cdMod.getId());
     fillContactForm(cdMod, false);
     submitContactModification();
     navi.homePage();
   }
 
-  public void delete(int index) {
+  public void delete(ContactData contact) {
     navi.homePage();
-    selectContact(index);
+    selectContactById(contact.getId());
     initContactDeletion();
     submitContactDeletion();
     navi.homePage();
@@ -132,8 +133,8 @@ public class ContactHelper extends HelperBase {
     return list;
   }
 
-  public List<ContactData> list() {
-    List<ContactData> contacts = new ArrayList<ContactData>();
+  public Set<ContactData> all() {
+    Set<ContactData> contacts = new HashSet<ContactData>();
     List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
     for (WebElement element : elements) {
       String lastname = element.findElements(By.tagName("td")).get(1).getText();
@@ -147,4 +148,6 @@ public class ContactHelper extends HelperBase {
     }
     return contacts;
   }
+
+
 }

@@ -6,6 +6,7 @@ import ru.p4t.addressbook.model.ContactData;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTests extends TestBase {
 
@@ -38,29 +39,23 @@ public class ContactCreationTests extends TestBase {
             .withAddress2("Some secondary address")
             .withPhone2("888899999")
             .withNotes("Extremely important notes for test");
-    ContactData cdAdd = new ContactData()
-            .withFirstname("Zorian")
-            .withLastname("Kazinsky");
 
     app.goTo().homePage();
 
-    List<ContactData> before = app.contact().list();
+    Set<ContactData> before = app.contact().all();
 
     app.contact().createContact(cd);
     log.info("Добавлен контакт " + cd);
     app.goTo().homePage();
 
-    List<ContactData> after = app.contact().list();
+    Set<ContactData> after = app.contact().all();
     Assert.assertEquals(after.size(), before.size() + 1);
 
     log.info("before size " + before.size());
     log.info("after size " + after.size());
 
-    before.add(cdAdd);
-    Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(),c2.getId());
-    before.sort(byId);
-    before.sort(byId);
-    after.sort(byId);
+    cd.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt());
+    before.add(cd);
     log.info("before value " + before);
     log.info("after value " + after);
     Assert.assertEquals(before,after);

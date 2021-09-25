@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
+import ru.p4t.addressbook.model.Groups;
 
 import java.io.File;
 import java.util.List;
@@ -92,6 +93,7 @@ public class ContactHelper extends HelperBase {
     initContactCreation();
     fillContactForm(cd, true);
     submitContactCreation();
+    contactCache = null;
   }
 
   public void modify(ContactData cdMod) {
@@ -100,6 +102,7 @@ public class ContactHelper extends HelperBase {
     initContactModification(cdMod.getId());
     fillContactForm(cdMod, false);
     submitContactModification();
+    contactCache = null;
     navi.homePage();
   }
 
@@ -108,6 +111,7 @@ public class ContactHelper extends HelperBase {
     selectContactById(contact.getId());
     initContactDeletion();
     submitContactDeletion();
+    contactCache = null;
     navi.homePage();
   }
 
@@ -128,8 +132,14 @@ public class ContactHelper extends HelperBase {
     return list;
   }
 
+  private Contacts contactCache = null;
+
   public Contacts all() {
-    Contacts contacts = new Contacts();
+    if (contactCache != null) {
+      return new Contacts(contactCache);
+    }
+
+    contactCache = new Contacts();
     List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
     for (WebElement element : elements) {
       String lastname = element.findElements(By.tagName("td")).get(1).getText();
@@ -139,9 +149,9 @@ public class ContactHelper extends HelperBase {
               .withId(id)
               .withFirstname(firstname)
               .withLastname(lastname);
-      contacts.add(contact);
+      contactCache.add(contact);
     }
-    return contacts;
+    return new Contacts(contactCache);
   }
 
 

@@ -29,6 +29,7 @@ public class ContactData {
   private String phone2;
   private String notes;
   private String allPhones;
+  private String allEmails;
 
   public String getAllPhones() {
     return allPhones;
@@ -36,6 +37,15 @@ public class ContactData {
 
   public ContactData withAllPhones(String allphones) {
     this.allPhones = allphones;
+    return this;
+  }
+
+  public String getAllEmails() {
+    return allEmails;
+  }
+
+  public ContactData withAllEmails(String allEmails) {
+    this.allEmails = allEmails;
     return this;
   }
 

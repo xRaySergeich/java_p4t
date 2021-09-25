@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ContactPhoneTests extends TestBase {
+public class ContactInfoTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions () {
@@ -47,23 +47,60 @@ public class ContactPhoneTests extends TestBase {
     }
   }
 
-  @Test
-  public void testConstactPhones() {
-    app.goTo().homePage();
-    ContactData contact = app.contact().all().iterator().next();
-    ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
 
-    assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm)));
+  public ContactData contact() {
+    return app.contact().all().iterator().next();
+  }
+
+  public ContactData contactInfoFromEditForm(ContactData contact) {
+    return app.contact().infoFromEditForm(contact);
+  }
+
+  @Test
+  public void testContactPhones() {
+    app.goTo().homePage();
+
+    assertThat(contact().getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm(contact()))));
   }
 
   private String mergePhones(ContactData contact) {
     return Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone(), contact.getPhone2())
             .stream().filter((s) -> !s.equals(""))
-            .map(ContactPhoneTests::cleaned)
+            .map(ContactInfoTests::cleaned)
             .collect(Collectors.joining("\n"));
   }
 
   public static String cleaned(String phone) {
     return phone.replaceAll("[-()\\s]", "");
   }
+
+  @Test
+  public void testPostAddress() {
+    app.goTo().homePage();
+
+    assertThat(contact().getAddress(), equalTo(makeInfoAddress(contactInfoFromEditForm(contact()))));
+  }
+
+  private String makeInfoAddress(ContactData contact) {
+    return contact.getAddress().replaceAll("\\s+\\n", "\n");
+  }
+
+  @Test
+  public void testEmails() {
+    app.goTo().homePage();
+
+    assertThat(contact().getAllEmails(), equalTo(mergeEmails(contactInfoFromEditForm(contact()))));
+  }
+
+  private String mergeEmails(ContactData contact) {
+    return Arrays.asList(contact.getEmail(), contact.getEmail2(), contact.getEmail3())
+            .stream().filter((s) -> !s.equals(""))
+            .map(ContactInfoTests::removeSpaces)
+            .collect(Collectors.joining("\n"));
+  }
+
+  public static String removeSpaces(String emails) {
+    return emails.replaceAll("\\s", "");
+  }
+
 }

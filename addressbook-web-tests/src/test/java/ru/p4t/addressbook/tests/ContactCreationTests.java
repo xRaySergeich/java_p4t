@@ -11,8 +11,36 @@ public class ContactCreationTests extends TestBase {
 
   @Test
   public void testContactCreation() throws Exception {
-    ContactData cd = new ContactData("Zorian", "Viktorovich", "Kazinsky", "Nutcracker", "anonymous.jpg", "Wizards, inc", "Some title", "Some address", "99922211", "77718882", "937557728", "993949587", "address1@ex.com", "address2@ex.com", "address3@ex.com", "http://localhost", "10", "August", "1955", "6", "April", "1999", "test1", "Some secondary address", "888899999", "Extremely important notes for test");
-    ContactData cdAdd = new ContactData("Zorian", null,"Kazinsky",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null );
+    ContactData cd = new ContactData()
+            .withFirstname("Zorian")
+            .withMiddlename("Viktorovich")
+            .withLastname("Kazinsky")
+            .withNickname("Nutcracker")
+            .withAvatarFileName("anonymous.jpg")
+            .withCompany("Wizards, inc")
+            .withTitle("Some title")
+            .withAddress("Some address")
+            .withHomePhone("99922211")
+            .withMobilePhone("77718882")
+            .withWorkPhone("937557728")
+            .withFax("993949587")
+            .withEmail("address1@ex.com")
+            .withEmail2("address2@ex.com")
+            .withEmail3("address3@ex.com")
+            .withHomepage("http://localhost")
+            .withBday("10")
+            .withBmonth("August")
+            .withByear("1955")
+            .withAday("6")
+            .withAmonth("April")
+            .withAyear("1999")
+            .withGroup("test1")
+            .withAddress2("Some secondary address")
+            .withPhone2("888899999")
+            .withNotes("Extremely important notes for test");
+    ContactData cdAdd = new ContactData()
+            .withFirstname("Zorian")
+            .withLastname("Kazinsky");
 
     app.goTo().homePage();
 

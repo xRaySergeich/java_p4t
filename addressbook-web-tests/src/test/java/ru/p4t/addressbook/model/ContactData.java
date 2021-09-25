@@ -28,6 +28,16 @@ public class ContactData {
   private String address2;
   private String phone2;
   private String notes;
+  private String allPhones;
+
+  public String getAllPhones() {
+    return allPhones;
+  }
+
+  public ContactData withAllPhones(String allphones) {
+    this.allPhones = allphones;
+    return this;
+  }
 
   public ContactData withId(int id) {
     this.id = id;
@@ -302,4 +312,5 @@ public class ContactData {
   public String getNotes() {
     return notes;
   }
+
 }

@@ -8,7 +8,7 @@ import ru.p4t.addressbook.appmanager.ApplicationManager;
 
 public class TestBase {
   static Logger log = Logger.getLogger(ContactCreationTests.class.getName());
-  protected static final ApplicationManager app = new ApplicationManager(BrowserType.CHROME);
+  protected static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
 
   @BeforeSuite(alwaysRun = true)
   public void setUp() throws Exception {

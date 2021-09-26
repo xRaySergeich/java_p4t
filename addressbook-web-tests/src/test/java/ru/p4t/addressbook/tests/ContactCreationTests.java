@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -11,12 +13,13 @@ public class ContactCreationTests extends TestBase {
 
   @Test
   public void testContactCreation() throws Exception {
+    File photo = new File("src/test/resources/anonymous.jpg");
     ContactData cd = new ContactData()
             .withFirstname("Zorian")
             .withMiddlename("Viktorovich")
             .withLastname("Kazinsky")
             .withNickname("Nutcracker")
-            .withAvatarFileName("anonymous.jpg")
+            .withPhoto(photo)
             .withCompany("Wizards, inc")
             .withTitle("Some title")
             .withAddress("Some address")

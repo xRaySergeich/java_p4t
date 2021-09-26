@@ -1,5 +1,7 @@
 package ru.p4t.addressbook.model;
 
+import java.io.File;
+
 public class ContactData {
   private int id = Integer.MAX_VALUE;
   private String firstname;
@@ -7,6 +9,17 @@ public class ContactData {
   private String lastname;
   private String nickname;
   private String avatarFileName;
+  private File photo;
+
+  public File getPhoto() {
+    return photo;
+  }
+
+  public ContactData withPhoto(File photo) {
+    this.photo = photo;
+    return this;
+  }
+
   private String company;
   private String title;
   private String address;

@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -12,12 +14,13 @@ public class ContactModificationTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions () {
+    File photo = new File("src/test/resources/anonymous.jpg");
     ContactData cdCreation = new ContactData()
             .withFirstname("Zorian")
             .withMiddlename("Viktorovich")
             .withLastname("Kazinsky")
             .withNickname("Nutcracker")
-            .withAvatarFileName("anonymous.jpg")
+            .withPhoto(photo)
             .withCompany("Wizards, inc")
             .withTitle("Some title")
             .withAddress("Some address")
@@ -47,17 +50,17 @@ public class ContactModificationTests extends TestBase {
 
   @Test
   public void testContactModification() throws Exception {
-
+    app.goTo().homePage();
     Contacts before = app.contact().all();
     ContactData modifiedContact = before.iterator().next();
-
+    File photo = new File("src/test/resources/anonymous.jpg");
     ContactData cdMod = new ContactData()
             .withId(modifiedContact.getId())
             .withFirstname("Deimen")
             .withMiddlename("Petrovich")
             .withLastname("Kazinsky")
             .withNickname("Nutcracker")
-            .withAvatarFileName("anonymous.jpg")
+            .withPhoto(photo)
             .withCompany("Wizards, inc")
             .withTitle("Some title")
             .withAddress("Some address")

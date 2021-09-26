@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -12,12 +14,13 @@ public class ContactDeletionTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions () {
+    File photo = new File("src/test/resources/anonymous.jpg");
     ContactData cdCreation = new ContactData()
             .withFirstname("Zorian")
             .withMiddlename("Viktorovich")
             .withLastname("Kazinsky")
             .withNickname("Nutcracker")
-            .withAvatarFileName("anonymous.jpg")
+            .withPhoto(photo)
             .withCompany("Wizards, inc")
             .withTitle("Some title")
             .withAddress("Some address")
@@ -48,6 +51,7 @@ public class ContactDeletionTests extends TestBase {
 
   @Test
   public void testContactDeletion() throws Exception {
+    app.goTo().homePage();
     Contacts before = app.contact().all();
     ContactData deletedContact = before.iterator().next();
 

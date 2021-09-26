@@ -2,12 +2,13 @@ package ru.p4t.addressbook.tests;
 
 import com.google.gson.Gson;
 import org.openqa.selenium.json.TypeToken;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
 import ru.p4t.addressbook.model.GroupData;
+import ru.p4t.addressbook.model.Groups;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,23 +37,27 @@ public class ContactCreationTests extends TestBase {
     return contacts.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
   }
 
-  private boolean isGroupExists = false;
+  private Groups groups = new Groups();
 
-  @BeforeMethod
-  public void ensurePreconditions () {
-    if (!isGroupExists) {
-      app.goTo().groupPage();
-      if (app.group().all().size() == 0 || app.group().all().stream().filter(group -> group.getName().equals("test1")).findFirst().orElse(null) == null) {
-        GroupData creationGroup = new GroupData().withName("test1");
-        app.group().create(creationGroup);
+  @BeforeTest
+  public void getGroupList() {
+    app.goTo().groupPage();
+    groups = app.group().all();
+  }
 
-      }
-      isGroupExists = true;
-    }
+  public void groupPrecondition (String groupName) {
+    app.goTo().groupPage();
+      GroupData creationGroup = new GroupData().withName(groupName);
+      app.group().create(creationGroup);
+    groups = app.group().all();
   }
 
   @Test(dataProvider = "validContactsFromJson")
   public void testContactCreation(ContactData cd) throws Exception {
+    ContactData finalCd = cd;
+    if (groups.stream().filter(group -> group.getName().equals(finalCd.getGroup())).findFirst().orElse(null) == null) {
+      groupPrecondition(cd.getGroup());
+    }
 
     File photo = new File("src/test/resources/anonymous.jpg");
     cd = cd.withPhoto(photo);

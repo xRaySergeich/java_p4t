@@ -44,34 +44,37 @@ public class ContactCreationTests extends TestBase {
   @BeforeTest
   public void getGroupList() {
     app.goTo().groupPage();
-    groups = app.group().all();
+    groups = app.db().groups();
   }
 
   public void groupPrecondition (String groupName) {
     app.goTo().groupPage();
       GroupData creationGroup = new GroupData().withName(groupName);
       app.group().create(creationGroup);
-    groups = app.group().all();
+    groups = app.db().groups();
   }
 
   @Test(dataProvider = "validContactsFromJson")
   public void testContactCreation(ContactData cd) {
+
     ContactData finalCd = cd;
+
     if (groups.stream().filter(group -> group.getName().equals(finalCd.getGroup())).findFirst().orElse(null) == null) {
       groupPrecondition(cd.getGroup());
     }
 
-    File photo = new File("src/test/resources/anonymous.jpg");
-    cd = cd.withPhoto(photo);
     app.goTo().homePage();
 
-    Contacts before = app.contact().all();
+    File photo = new File("src/test/resources/anonymous.jpg");
+    cd = cd.withPhoto(photo);
+
+    Contacts before = app.db().contacts();
 
     app.contact().createContact(cd);
     logger.info("added contact " + cd);
     app.goTo().homePage();
     assertThat(app.contact().getContactCount(), equalTo(before.size() + 1));
-    Contacts after = app.contact().all();
+    Contacts after = app.db().contacts();
 
     logger.info("before size " + before.size());
     logger.info("after size " + after.size());

@@ -1,76 +1,133 @@
 package ru.p4t.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.File;
 
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
+
+  @Id
   private int id = Integer.MAX_VALUE;
+
   @Expose
   private String firstname;
+
   @Expose
   private String middlename;
+
   @Expose
   private String lastname;
+
   @Expose
   private String nickname;
+
   @Expose
+  @Transient
   private String avatarFileName;
-  private File photo;
 
-  public File getPhoto() {
-    return photo;
-  }
-
-  public ContactData withPhoto(File photo) {
-    this.photo = photo;
-    return this;
-  }
+  @Type(type = "text")
+  private String photo;
 
   @Expose
   private String company;
+
   @Expose
   private String title;
+
   @Expose
+  @Type(type = "text")
   private String address;
+
   @Expose
+  @Column(name = "home")
+  @Type(type = "text")
   private String homePhone;
+
   @Expose
+  @Column(name = "mobile")
+  @Type(type = "text")
   private String mobilePhone;
+
   @Expose
+  @Column(name = "work")
+  @Type(type = "text")
   private String workPhone;
+
   @Expose
+  @Type(type = "text")
   private String fax;
+
   @Expose
+  @Type(type = "text")
   private String email;
+
   @Expose
+  @Type(type = "text")
   private String email2;
+
   @Expose
+  @Type(type = "text")
   private String email3;
+
   @Expose
+  @Type(type = "text")
   private String homepage;
+
   @Expose
+  @Column(columnDefinition = "TINYINT")
   private String bday;
+
   @Expose
   private String bmonth;
+
   @Expose
   private String byear;
+
   @Expose
+  @Column(columnDefinition = "TINYINT")
   private String aday;
+
   @Expose
   private String amonth;
+
   @Expose
   private String ayear;
+
   @Expose
+  @Transient
   private String group;
+
   @Expose
+  @Type(type = "text")
   private String address2;
+
   @Expose
+  @Type(type = "text")
   private String phone2;
+
   @Expose
+  @Type(type = "text")
   private String notes;
+
+  @Transient
   private String allPhones;
+
+  @Transient
   private String allEmails;
+
+
+  public File getPhoto() {
+    return new File(photo);
+  }
+
+  public ContactData withPhoto(File photo) {
+    this.photo = photo.getPath();
+    return this;
+  }
 
   public String getAllPhones() {
     return allPhones;
@@ -226,15 +283,41 @@ public class ContactData {
   }
 
 
-
   @Override
   public String toString() {
     return "ContactData{" +
-            "firstname='" + firstname + '\'' +
+            "id=" + id +
+            ", firstname='" + firstname + '\'' +
+            ", middlename='" + middlename + '\'' +
             ", lastname='" + lastname + '\'' +
+            ", nickname='" + nickname + '\'' +
+            ", avatarFileName='" + avatarFileName + '\'' +
+            ", photo='" + photo + '\'' +
+            ", company='" + company + '\'' +
+            ", title='" + title + '\'' +
+            ", address='" + address + '\'' +
+            ", homePhone='" + homePhone + '\'' +
+            ", mobilePhone='" + mobilePhone + '\'' +
+            ", workPhone='" + workPhone + '\'' +
+            ", fax='" + fax + '\'' +
+            ", email='" + email + '\'' +
+            ", email2='" + email2 + '\'' +
+            ", email3='" + email3 + '\'' +
+            ", homepage='" + homepage + '\'' +
+            ", bday='" + bday + '\'' +
+            ", bmonth='" + bmonth + '\'' +
+            ", byear='" + byear + '\'' +
+            ", aday='" + aday + '\'' +
+            ", amonth='" + amonth + '\'' +
+            ", ayear='" + ayear + '\'' +
+            ", group='" + group + '\'' +
+            ", address2='" + address2 + '\'' +
+            ", phone2='" + phone2 + '\'' +
+            ", notes='" + notes + '\'' +
+            ", allPhones='" + allPhones + '\'' +
+            ", allEmails='" + allEmails + '\'' +
             '}';
   }
-
 
   @Override
   public boolean equals(Object o) {

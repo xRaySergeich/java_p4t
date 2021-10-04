@@ -50,14 +50,14 @@ public class ContactDeletionTests extends TestBase {
 
 
   @Test
-  public void testContactDeletion() throws Exception {
+  public void testContactDeletion() {
     app.goTo().homePage();
     Contacts before = app.contact().all();
     ContactData deletedContact = before.iterator().next();
 
     app.contact().delete(deletedContact);
 
-    log.info("deleted contact " + deletedContact);
+    logger.info("deleted contact " + deletedContact);
     assertThat(app.contact().getContactCount(), equalTo(before.size() - 1));
     Contacts after = app.contact().all();
 

@@ -49,7 +49,7 @@ public class ContactModificationTests extends TestBase {
   }
 
   @Test
-  public void testContactModification() throws Exception {
+  public void testContactModification() {
     app.goTo().homePage();
     Contacts before = app.contact().all();
     ContactData modifiedContact = before.iterator().next();
@@ -85,10 +85,10 @@ public class ContactModificationTests extends TestBase {
 
     app.contact().modify(cdMod);
 
-    log.info("contact modified, before " + modifiedContact);
+    logger.info("contact modified, before " + modifiedContact);
     assertThat(app.contact().getContactCount(), equalTo(before.size()));
     Contacts after = app.contact().all();
-    log.info("contact modified, after " + cdMod);
+    logger.info("contact modified, after " + cdMod);
 
     before.remove(modifiedContact);
     before.add(cdMod);

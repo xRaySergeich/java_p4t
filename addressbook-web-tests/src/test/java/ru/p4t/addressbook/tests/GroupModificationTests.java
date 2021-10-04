@@ -5,11 +5,11 @@ import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.GroupData;
 import ru.p4t.addressbook.model.Groups;
 
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupModificationTests extends TestBase {
+
   @BeforeMethod
   public void ensurePreconditions() {
     GroupData creationGroup = new GroupData().withName("test1");
@@ -31,9 +31,9 @@ public class GroupModificationTests extends TestBase {
 
     app.group().modify(group);
     assertThat(app.group().count(), equalTo(before.size()));
-    log.info("modified group, before " + modifiedGroup);
+    logger.info("modified group, before " + modifiedGroup);
     Groups after = app.group().all();
-    log.info("modified group, after " + group);
+    logger.info("modified group, after " + group);
 
     before.remove(modifiedGroup);
     before.add(group);

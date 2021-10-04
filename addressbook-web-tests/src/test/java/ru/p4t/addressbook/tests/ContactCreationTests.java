@@ -26,14 +26,14 @@ public class ContactCreationTests extends TestBase {
   @DataProvider
   public Iterator<Object[]> validContactsFromJson() throws IOException {
     try (BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/contacts.json"))) {
-      String json = "";
+      StringBuilder json = new StringBuilder();
       String line = reader.readLine();
       while (line != null) {
-        json += line;
+        json.append(line);
         line = reader.readLine();
       }
       Gson gson = new Gson();
-      List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>() {
+      List<ContactData> contacts = gson.fromJson(json.toString(), new TypeToken<List<ContactData>>() {
       }.getType()); //List<ContactData>.class
       return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
@@ -55,7 +55,7 @@ public class ContactCreationTests extends TestBase {
   }
 
   @Test(dataProvider = "validContactsFromJson")
-  public void testContactCreation(ContactData cd) throws Exception {
+  public void testContactCreation(ContactData cd) {
     ContactData finalCd = cd;
     if (groups.stream().filter(group -> group.getName().equals(finalCd.getGroup())).findFirst().orElse(null) == null) {
       groupPrecondition(cd.getGroup());
@@ -68,17 +68,18 @@ public class ContactCreationTests extends TestBase {
     Contacts before = app.contact().all();
 
     app.contact().createContact(cd);
-    log.info("added contact " + cd);
+    logger.info("added contact " + cd);
     app.goTo().homePage();
     assertThat(app.contact().getContactCount(), equalTo(before.size() + 1));
     Contacts after = app.contact().all();
 
-    log.info("before size " + before.size());
-    log.info("after size " + after.size());
+    logger.info("before size " + before.size());
+    logger.info("after size " + after.size());
 
-    assertThat(after, equalTo(before.withAdded(cd.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
-    log.info("before value " + before);
-    log.info("after value " + after);
+    //assertThat(after, equalTo(before.withAdded(cd.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
+    assertThat(after, equalTo(before.withAdded(cd.withId(after.stream().mapToInt(ContactData::getId).max().getAsInt()))));
+    logger.info("before value " + before);
+    logger.info("after value " + after);
   }
 
 }

@@ -4,11 +4,14 @@ import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.openqa.selenium.json.TypeToken;
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.GroupData;
 import ru.p4t.addressbook.model.Groups;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,16 +43,16 @@ public class GroupCreationTests extends TestBase {
   @DataProvider
   public Iterator<Object[]> validGroupsFromXml() throws IOException {
     try(BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.xml"))) {
-      String xml = "";
+      StringBuilder xml = new StringBuilder();
       String line = reader.readLine();
       while (line != null) {
-        xml += line;
+        xml.append(line);
         line = reader.readLine();
       }
       XStream xStream = new XStream();
       xStream.addPermission(AnyTypePermission.ANY);
       xStream.processAnnotations(GroupData.class);
-      List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml);
+      List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml.toString());
       return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
   }
@@ -57,30 +60,32 @@ public class GroupCreationTests extends TestBase {
   @DataProvider
   public Iterator<Object[]> validGroupsFromJson() throws IOException {
     try (BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.json"))) {
-      String json = "";
+      StringBuilder json = new StringBuilder();
       String line = reader.readLine();
       while (line != null) {
-        json += line;
+        json.append(line);
         line = reader.readLine();
       }
       Gson gson = new Gson();
-      List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>() {
+      List<GroupData> groups = gson.fromJson(json.toString(), new TypeToken<List<GroupData>>() {
       }.getType()); //List<GroupData>.class
       return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
   }
 
   @Test(dataProvider = "validGroupsFromJson")
-  public void testGroupCreation(GroupData group) throws Exception {
+  public void testGroupCreation(GroupData group) {
+
     app.goTo().groupPage();
     Groups before = app.group().all();
     app.group().create(group);
-    log.info("added group " + group);
+    logger.info("added group " + group);
     app.goTo().groupPage();
     assertThat(app.group().count(), equalTo(before.size() + 1));
     Groups after = app.group().all();
     assertThat(after, equalTo(
-            before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+            //before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+            before.withAdded(group.withId(after.stream().mapToInt(GroupData::getId).max().getAsInt()))));
   }
 
   @Test

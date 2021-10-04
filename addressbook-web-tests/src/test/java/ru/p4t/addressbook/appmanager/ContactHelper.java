@@ -7,7 +7,6 @@ import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
 
-import java.io.File;
 import java.util.List;
 
 public class ContactHelper extends HelperBase {
@@ -120,12 +119,10 @@ public class ContactHelper extends HelperBase {
   }
 
   public List<WebElement> getList() {
-    List<WebElement> list = wd.findElements(By.name("selected[]"));
-    return list;
+    return wd.findElements(By.name("selected[]"));
   }
   public List<WebElement> listEdit () {
-    List<WebElement> list = wd.findElements(By.xpath("//img[@alt='Edit']"));
-    return list;
+    return wd.findElements(By.xpath("//img[@alt='Edit']"));
   }
 
   private Contacts contactCache = null;

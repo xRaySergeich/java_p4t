@@ -83,6 +83,8 @@ public class ContactCreationTests extends TestBase {
     assertThat(after, equalTo(before.withAdded(cd.withId(after.stream().mapToInt(ContactData::getId).max().getAsInt()))));
     logger.info("before value " + before);
     logger.info("after value " + after);
+
+    verifyContactListInUI();
   }
 
 }

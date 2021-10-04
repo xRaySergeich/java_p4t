@@ -93,6 +93,8 @@ public class ContactModificationTests extends TestBase {
     before.remove(modifiedContact);
     before.add(cdMod);
     assertThat(after, equalTo(before.withModified(cdMod, modifiedContact)));
+
+    verifyContactListInUI();
   }
 
 

@@ -38,6 +38,8 @@ public class GroupModificationTests extends TestBase {
     before.remove(modifiedGroup);
     before.add(group);
     assertThat(after, equalTo(before.withModified(group, modifiedGroup)));
+
+    verifyGroupListInUI();
   }
 
 }

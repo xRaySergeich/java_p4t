@@ -38,6 +38,9 @@ task testGroups (type: Test) {
     if (project.hasProperty('target')) {
         systemProperty('target', "${target}")
     }
+    if (project.hasProperty('isUIverified')) {
+        systemProperty('isUIverified', "${isUIverified}")
+    }
 }
 
 task testContacts (type: Test) {
@@ -49,5 +52,8 @@ task testContacts (type: Test) {
     }
     if (project.hasProperty('target')) {
         systemProperty('target', "${target}")
+    }
+    if (project.hasProperty('isUIverified')) {
+        systemProperty('isUIverified', "${isUIverified}")
     }
 }

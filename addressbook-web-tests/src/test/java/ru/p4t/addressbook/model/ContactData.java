@@ -493,4 +493,9 @@ public class ContactData {
     return this;
   }
 
+  public ContactData deleteGroup(GroupData group) {
+    groups.remove(group);
+    return this;
+  }
+
 }

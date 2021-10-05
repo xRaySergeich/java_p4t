@@ -53,7 +53,7 @@ public class ContactHelper extends HelperBase {
 
     if (creation) {
       if (contactData.getGroups().size() > 0) {
-        Assert.assertTrue(contactData.getGroups().size() == 1);
+        Assert.assertEquals(contactData.getGroups().size(), 1);
         new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
       }
     } else {
@@ -122,7 +122,13 @@ public class ContactHelper extends HelperBase {
     selectContactById(contact.getId());
     selectById(By.name("to_group"), group.getId());
     click(By.cssSelector("input[value='Add to']"));
+  }
 
+  public void deleteContactFromAGroup(ContactData contact, GroupData group) {
+    navi.homePage();
+    selectById(By.name("group"), group.getId());
+    selectContactById(contact.getId());
+    click(By.name("remove"));
   }
 
   public boolean isThereAContact() {

@@ -12,12 +12,12 @@ import java.util.Objects;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AddContactInGroupTest extends TestBase {
+public class DeleteContactFromGroupTest extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions () {
-    Contacts before = app.db().contacts();
     Groups groups = app.db().groups();
+    Contacts before = app.db().contacts();
 
     if (groups.size() == 0) {
       GroupData group = app.group().createGroup();
@@ -28,53 +28,53 @@ public class AddContactInGroupTest extends TestBase {
     if (before.size() == 0) {
       app.contact().createContact(groups.iterator().next());
       before = app.db().contacts();
-    }
-
-    ContactData chosenContact = getRandomContact(before);
-    Groups contactGroups = chosenContact.getGroups();
-
-    boolean isThereAContactWithoutAllGroups = false;
-    for (ContactData contact : before) {
-      if (contactGroups.size() == groups.size()) {
-        chosenContact = getRandomContact(before);
+    } else {
+      ContactData chosenContact = getRandomContact(before);
+      if (chosenContact.getGroups().size() == 0) {
+        boolean isThereAContactWithGroups = false;
+        for (ContactData contact : before) {
+          chosenContact = getRandomContact(before);
+          if (chosenContact.getGroups().size() != 0) {
+            isThereAContactWithGroups = true;
+            break;
+          }
+        }
+        if (!isThereAContactWithGroups) {
+          //добавить контакт в группу
+          AddContactInGroupTest addContactInGroupTest = new AddContactInGroupTest();
+          addContactInGroupTest.testAddContactInGroup();
+        }
       }
-      else {
-        isThereAContactWithoutAllGroups = true;
-        break;
-      }
+
     }
 
-    if(!isThereAContactWithoutAllGroups) {
-      GroupData group = app.group().createGroup();
-      logger.info("Create a group " + group);
-    }
   }
 
   @Test
-  public void testAddContactInGroup() {
-    Contacts before = app.db().contacts();
+  public void testDeleteContactForGroup() {
     Groups groups = app.db().groups();
+    Contacts before = app.db().contacts();
 
     ContactData chosenContact = getRandomContact(before);
     Groups contactGroups = chosenContact.getGroups();
 
     for (ContactData contact : before) {
-      if (contactGroups.size() == groups.size()) {
+      if (contactGroups.size() == 0) {
         chosenContact = getRandomContact(before);
       } else {
         for (GroupData group : groups) {
-          if (contactGroups.stream().filter(it -> it.getId() == group.getId()).findFirst().orElse(null) == null) {
-            app.contact().addContactInAGroup(chosenContact, group);
+          if (contactGroups.stream().filter(it -> it.getId() == group.getId()).findFirst().orElse(null) != null) {
+            app.contact().deleteContactFromAGroup(chosenContact, group);
 
             Contacts after = app.db().contacts();
             ContactData finalChosenContact = chosenContact;
             Groups contactGroupsAfter = Objects.requireNonNull(after.stream().filter(it -> it.getId() == finalChosenContact.getId()).findFirst().orElse(null)).getGroups();
 
-            assertThat(contactGroupsAfter.size(), equalTo(contactGroups.size() + 1));
+            assertThat(contactGroupsAfter.size(), equalTo(contactGroups.size() - 1));
 
-            assertThat(after, equalTo(before.withAddedGroupInContact(chosenContact, group)));
+            assertThat(after, equalTo(before.withDeletedGroupFromContact(chosenContact, group)));
 
-            logger.info("Added group " + group + " to a contact " + finalChosenContact);
+            logger.info("Deleted group " + group + " from contact " + finalChosenContact);
             break;
           }
         }

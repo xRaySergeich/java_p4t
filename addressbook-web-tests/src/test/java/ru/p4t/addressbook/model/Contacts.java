@@ -4,6 +4,7 @@ import com.google.common.collect.ForwardingSet;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Contacts extends ForwardingSet<ContactData> {
@@ -48,7 +49,15 @@ public class Contacts extends ForwardingSet<ContactData> {
 
   public Contacts withAddedGroupInContact(ContactData chosenContact, GroupData chosenGroup) {
     Contacts contacts = new Contacts(this);
-    ContactData modContact = contacts.stream().filter(contactData -> contactData.getId() == chosenContact.getId()).findFirst().orElse(null).inGroup(chosenGroup);
+    ContactData modContact = Objects.requireNonNull(contacts.stream().filter(contactData -> contactData.getId() == chosenContact.getId()).findFirst().orElse(null)).inGroup(chosenGroup);
+    contacts.remove(chosenContact);
+    contacts.add(modContact);
+    return contacts;
+  }
+
+  public Contacts withDeletedGroupFromContact(ContactData chosenContact, GroupData chosenGroup) {
+    Contacts contacts = new Contacts(this);
+    ContactData modContact = Objects.requireNonNull(contacts.stream().filter(contactData -> contactData.getId() == chosenContact.getId()).findFirst().orElse(null)).deleteGroup(chosenGroup);
     contacts.remove(chosenContact);
     contacts.add(modContact);
     return contacts;

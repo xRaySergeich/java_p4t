@@ -60,15 +60,6 @@ public class GroupData {
     return this;
   }
 
-  public GroupData withGroup(GroupData group) {
-    this.id = group.getId();
-    this.name = group.getName();
-    this.header = group.getHeader();
-    this.footer = group.getFooter();
-    return this;
-
-  }
-
   @Override
   public String toString() {
     return "GroupData{" +

@@ -41,6 +41,11 @@ public class HelperBase {
     new Select(wd.findElement(locator)).selectByVisibleText(text);
   }
 
+  protected void selectById(By locator, int id) {
+    click(locator);
+    new Select(wd.findElement(locator)).selectByValue(String.valueOf(id));
+  }
+
   protected boolean isElementPresent(By by) {
     try {
       wd.findElement(by);

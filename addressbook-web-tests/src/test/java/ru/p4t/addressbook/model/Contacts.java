@@ -45,5 +45,13 @@ public class Contacts extends ForwardingSet<ContactData> {
     contacts.remove(contact);
     return contacts;
   }
+
+  public Contacts withAddedGroupInContact(ContactData chosenContact, GroupData chosenGroup) {
+    Contacts contacts = new Contacts(this);
+    ContactData modContact = contacts.stream().filter(contactData -> contactData.getId() == chosenContact.getId()).findFirst().orElse(null).inGroup(chosenGroup);
+    contacts.remove(chosenContact);
+    contacts.add(modContact);
+    return contacts;
+  }
 }
 

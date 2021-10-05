@@ -3,6 +3,7 @@ package ru.p4t.addressbook.tests;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.p4t.addressbook.model.ContactData;
+import ru.p4t.addressbook.model.GroupData;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class ContactInfoTests extends TestBase {
             .withAday("6")
             .withAmonth("April")
             .withAyear("1999")
-            .withGroup("test1")
+            .inGroup(new GroupData().withName("test1"))
             .withAddress2("Some secondary address")
             .withPhone2("888899999")
             .withNotes("Extremely important notes for test");

@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -57,10 +58,10 @@ public class ContactCreationTests extends TestBase {
   @Test(dataProvider = "validContactsFromJson")
   public void testContactCreation(ContactData cd) {
 
-    ContactData finalCd = cd;
+    String contactGroupName = Objects.requireNonNull(cd.getGroups().stream().findFirst().orElse(null)).getName();
 
-    if (groups.stream().filter(group -> group.getName().equals(finalCd.getGroup())).findFirst().orElse(null) == null) {
-      groupPrecondition(cd.getGroup());
+    if (groups.stream().filter(group -> group.getName().equals(contactGroupName)).findFirst().orElse(null) == null) {
+      groupPrecondition(contactGroupName);
     }
 
     app.goTo().homePage();

@@ -7,7 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.p4t.addressbook.model.ContactData;
 import ru.p4t.addressbook.model.Contacts;
+import ru.p4t.addressbook.model.GroupData;
 
+import java.io.File;
 import java.util.List;
 
 public class ContactHelper extends HelperBase {
@@ -89,6 +91,7 @@ public class ContactHelper extends HelperBase {
   }
 
   public void createContact(ContactData cd) {
+    navi.homePage();
     initContactCreation();
     fillContactForm(cd, true);
     submitContactCreation();
@@ -96,8 +99,8 @@ public class ContactHelper extends HelperBase {
   }
 
   public void modify(ContactData cdMod) {
-    selectContactById(cdMod.getId());
     navi.homePage();
+    selectContactById(cdMod.getId());
     initContactModificationById(cdMod.getId());
     fillContactForm(cdMod, false);
     submitContactModification();
@@ -112,6 +115,14 @@ public class ContactHelper extends HelperBase {
     submitContactDeletion();
     contactCache = null;
     navi.homePage();
+  }
+
+  public void addContactInAGroup(ContactData contact, GroupData group) {
+    navi.homePage();
+    selectContactById(contact.getId());
+    selectById(By.name("to_group"), group.getId());
+    click(By.cssSelector("input[value='Add to']"));
+
   }
 
   public boolean isThereAContact() {
@@ -185,5 +196,69 @@ public class ContactHelper extends HelperBase {
             .withEmail(email)
             .withEmail2(email2)
             .withEmail3(email3);
+  }
+
+  public void createContact() {
+    File photo = new File("src/test/resources/anonymous.jpg");
+    ContactData cdCreation = new ContactData()
+            .withFirstname("Zorian")
+            .withMiddlename("Viktorovich")
+            .withLastname("Kazinsky")
+            .withNickname("Nutcracker")
+            .withPhoto(photo)
+            .withCompany("Wizards, inc")
+            .withTitle("Some title")
+            .withAddress("Some address")
+            .withHomePhone("99922211")
+            .withMobilePhone("77718882")
+            .withWorkPhone("937557728")
+            .withFax("993949587")
+            .withEmail("address1@ex.com")
+            .withEmail2("address2@ex.com")
+            .withEmail3("address3@ex.com")
+            .withHomepage("http://localhost")
+            .withBday("10")
+            .withBmonth("August")
+            .withByear("1955")
+            .withAday("6")
+            .withAmonth("April")
+            .withAyear("1999")
+            .inGroup(new GroupData().withName("test1"))
+            .withAddress2("Some secondary address")
+            .withPhone2("888899999")
+            .withNotes("Extremely important notes for test");
+    createContact(cdCreation);
+  }
+
+  public void createContact(GroupData group) {
+    File photo = new File("src/test/resources/anonymous.jpg");
+    ContactData cdCreation = new ContactData()
+            .withFirstname("Zorian")
+            .withMiddlename("Viktorovich")
+            .withLastname("Kazinsky")
+            .withNickname("Nutcracker")
+            .withPhoto(photo)
+            .withCompany("Wizards, inc")
+            .withTitle("Some title")
+            .withAddress("Some address")
+            .withHomePhone("99922211")
+            .withMobilePhone("77718882")
+            .withWorkPhone("937557728")
+            .withFax("993949587")
+            .withEmail("address1@ex.com")
+            .withEmail2("address2@ex.com")
+            .withEmail3("address3@ex.com")
+            .withHomepage("http://localhost")
+            .withBday("10")
+            .withBmonth("August")
+            .withByear("1955")
+            .withAday("6")
+            .withAmonth("April")
+            .withAyear("1999")
+            .inGroup(group)
+            .withAddress2("Some secondary address")
+            .withPhone2("888899999")
+            .withNotes("Extremely important notes for test");
+    createContact(cdCreation);
   }
 }

@@ -6,6 +6,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.p4t.addressbook.model.ContactData;
+import ru.p4t.addressbook.model.GroupData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +28,7 @@ public class ContactDataGenerator {
   public static void main(String[] args) throws IOException {
     ContactDataGenerator generator = new ContactDataGenerator();
     JCommander jCommander = new JCommander(generator);
-    try{
+    try {
       jCommander.parse(args);
     } catch (ParameterException ex) {
       jCommander.usage();
@@ -48,9 +49,10 @@ public class ContactDataGenerator {
   }
 
   private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
+    System.out.println(new File(".").getAbsolutePath());
     Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
     String json = gson.toJson(contacts);
-    try(Writer writer = new FileWriter(file)) {
+    try (Writer writer = new FileWriter(file)) {
       writer.write(json);
     }
   }
@@ -80,7 +82,7 @@ public class ContactDataGenerator {
               .withAday("6")
               .withAmonth("April")
               .withAyear("1999")
-              .withGroup("test1")
+              .inGroup(new GroupData().withName("test1"))
               .withAddress2(String.format("Some secondary address %s", i))
               .withPhone2(String.format("888899999%s", i))
               .withNotes(String.format("Extremely important notes for test %s", i)));

@@ -47,6 +47,7 @@ public class GroupHelper extends HelperBase {
   }
 
   public void create(GroupData group) {
+    navi.groupPage();
     initGroupCreation();
     fillGroupForm(group);
     submitGroupCreation();
@@ -101,5 +102,14 @@ public class GroupHelper extends HelperBase {
 
   public int count() {
     return wd.findElements(By.name("selected[]")).size();
+  }
+
+  public GroupData createGroup() {
+    GroupData creationGroup = new GroupData()
+            .withName("some name")
+            .withHeader("some header")
+            .withFooter("some footer");
+    create(creationGroup);
+    return creationGroup;
   }
 }

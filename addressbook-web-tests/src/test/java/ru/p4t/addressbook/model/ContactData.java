@@ -100,9 +100,6 @@ public class ContactData {
   private String ayear;
 
   @Expose
-  @Transient
-  private String group;
-
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
   private Set<GroupData> groups = new HashSet<>();
@@ -265,11 +262,6 @@ public class ContactData {
 
   public ContactData withAyear(String ayear) {
     this.ayear = ayear;
-    return this;
-  }
-
-  public ContactData withGroup(String group) {
-    this.group = group;
     return this;
   }
 
@@ -480,10 +472,6 @@ public class ContactData {
     return ayear;
   }
 
-  public String getGroup() {
-    return group;
-  }
-
   public String getAddress2() {
     return address2;
   }
@@ -498,6 +486,11 @@ public class ContactData {
 
   public Groups getGroups() {
     return new Groups(groups);
+  }
+
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
+    return this;
   }
 
 }

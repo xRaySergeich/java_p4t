@@ -22,59 +22,53 @@ public class AddContactInGroupTest extends TestBase {
     if (groups.size() == 0) {
       GroupData group = app.group().createGroup();
       logger.info("Create a group " + group);
-      groups = app.db().groups();
+      if (before.size() != 0) {
+        return;
+      }
     }
 
     if (before.size() == 0) {
-      app.contact().createContact(groups.iterator().next());
-      before = app.db().contacts();
+      app.contact().createContactWithoutGroup();
+      return;
     }
 
-    ContactData chosenContact = getRandomContact(before);
-    Groups contactGroups = chosenContact.getGroups();
+    Groups contactGroups = getRandomContact(before).getGroups();
+    groups = app.db().groups();
 
-    boolean isThereAContactWithoutAllGroups = false;
-    for (ContactData contact : before) {
+    for (ContactData ignored : before) {
       if (contactGroups.size() == groups.size()) {
-        chosenContact = getRandomContact(before);
-      }
-      else {
-        isThereAContactWithoutAllGroups = true;
-        break;
+        contactGroups = getRandomContact(before).getGroups();
+      } else {
+        return;
       }
     }
 
-    if(!isThereAContactWithoutAllGroups) {
-      GroupData group = app.group().createGroup();
-      logger.info("Create a group " + group);
-    }
+    GroupData group = app.group().createGroup();
+    logger.info("Create a group " + group);
   }
 
-  @Test
+  @Test()
   public void testAddContactInGroup() {
-    Contacts before = app.db().contacts();
+    Contacts contacts = app.db().contacts();
     Groups groups = app.db().groups();
 
-    ContactData chosenContact = getRandomContact(before);
-    Groups contactGroups = chosenContact.getGroups();
+    Groups contactGroups;
 
-    for (ContactData contact : before) {
-      if (contactGroups.size() == groups.size()) {
-        chosenContact = getRandomContact(before);
-      } else {
+    for (ContactData contact : contacts) {
+      contactGroups = contact.getGroups();
+      if (contactGroups.size() != groups.size()) {
         for (GroupData group : groups) {
           if (contactGroups.stream().filter(it -> it.getId() == group.getId()).findFirst().orElse(null) == null) {
-            app.contact().addContactInAGroup(chosenContact, group);
+            app.contact().addContactInAGroup(contact, group);
 
             Contacts after = app.db().contacts();
-            ContactData finalChosenContact = chosenContact;
-            Groups contactGroupsAfter = Objects.requireNonNull(after.stream().filter(it -> it.getId() == finalChosenContact.getId()).findFirst().orElse(null)).getGroups();
+            Groups contactGroupsAfter = Objects.requireNonNull(after.stream().filter(it -> it.getId() == contact.getId()).findFirst().orElse(null)).getGroups();
 
             assertThat(contactGroupsAfter.size(), equalTo(contactGroups.size() + 1));
 
-            assertThat(after, equalTo(before.withAddedGroupInContact(chosenContact, group)));
+            assertThat(contactGroupsAfter, equalTo(contactGroups.withAdded(group)));
 
-            logger.info("Added group " + group + " to a contact " + finalChosenContact);
+            logger.info("Added group " + group + " to a contact " + contact);
             break;
           }
         }

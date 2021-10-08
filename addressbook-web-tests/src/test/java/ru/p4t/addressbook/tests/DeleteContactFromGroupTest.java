@@ -15,38 +15,27 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class DeleteContactFromGroupTest extends TestBase {
 
   @BeforeMethod
-  public void ensurePreconditions () {
+  public void ensurePreconditions() {
     Groups groups = app.db().groups();
     Contacts before = app.db().contacts();
 
+    if (before.size() == 0) {
+      app.contact().createContactWithoutGroup();
+      before = app.db().contacts();
+    }
+
     if (groups.size() == 0) {
-      GroupData group = app.group().createGroup();
-      logger.info("Create a group " + group);
+      app.group().createGroup();
       groups = app.db().groups();
     }
 
-    if (before.size() == 0) {
-      app.contact().createContact(groups.iterator().next());
-      before = app.db().contacts();
-    } else {
-      ContactData chosenContact = getRandomContact(before);
-      if (chosenContact.getGroups().size() == 0) {
-        boolean isThereAContactWithGroups = false;
-        for (ContactData contact : before) {
-          chosenContact = getRandomContact(before);
-          if (chosenContact.getGroups().size() != 0) {
-            isThereAContactWithGroups = true;
-            break;
-          }
-        }
-        if (!isThereAContactWithGroups) {
-          //добавить контакт в группу
-          AddContactInGroupTest addContactInGroupTest = new AddContactInGroupTest();
-          addContactInGroupTest.testAddContactInGroup();
-        }
+    for (ContactData contact : before) {
+      if (contact.getGroups().size() != 0) {
+        return;
       }
-
     }
+
+    app.contact().addContactInAGroup(getRandomContact(before), getRandomGroup(groups));
 
   }
 
@@ -55,36 +44,36 @@ public class DeleteContactFromGroupTest extends TestBase {
     Groups groups = app.db().groups();
     Contacts before = app.db().contacts();
 
-    ContactData chosenContact = getRandomContact(before);
-    Groups contactGroups = chosenContact.getGroups();
+    Groups contactGroups;
 
     for (ContactData contact : before) {
-      if (contactGroups.size() == 0) {
-        chosenContact = getRandomContact(before);
-      } else {
+      contactGroups = contact.getGroups();
+      if (contactGroups.size() != 0) {
         for (GroupData group : groups) {
           if (contactGroups.stream().filter(it -> it.getId() == group.getId()).findFirst().orElse(null) != null) {
-            app.contact().deleteContactFromAGroup(chosenContact, group);
+            app.contact().deleteContactFromAGroup(contact, group);
 
             Contacts after = app.db().contacts();
-            ContactData finalChosenContact = chosenContact;
-            Groups contactGroupsAfter = Objects.requireNonNull(after.stream().filter(it -> it.getId() == finalChosenContact.getId()).findFirst().orElse(null)).getGroups();
+            Groups contactGroupsAfter = Objects.requireNonNull(after.stream().filter(it -> it.getId() == contact.getId()).findFirst().orElse(null)).getGroups();
 
             assertThat(contactGroupsAfter.size(), equalTo(contactGroups.size() - 1));
 
-            assertThat(after, equalTo(before.withDeletedGroupFromContact(chosenContact, group)));
+            assertThat(contactGroupsAfter, equalTo(contactGroups.without(group)));
 
-            logger.info("Deleted group " + group + " from contact " + finalChosenContact);
+            logger.info("Deleted group " + group + " from contact " + contact);
             break;
           }
         }
+        break;
       }
-      break;
+    }
+  }
+
+    public ContactData getRandomContact(Contacts contacts){
+      return contacts.iterator().next();
     }
 
+    public GroupData getRandomGroup(Groups groups){
+      return groups.iterator().next();
+    }
   }
-
-  public ContactData getRandomContact(Contacts contacts) {
-    return contacts.iterator().next();
-  }
-}

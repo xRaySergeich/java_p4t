@@ -22,6 +22,7 @@ public class AddContactInGroupTest extends TestBase {
     if (groups.size() == 0) {
       GroupData group = app.group().createGroup();
       logger.info("Create a group " + group);
+      groups = app.db().groups();
       if (before.size() != 0) {
         return;
       }
@@ -32,14 +33,12 @@ public class AddContactInGroupTest extends TestBase {
       return;
     }
 
-    Groups contactGroups = getRandomContact(before).getGroups();
-    groups = app.db().groups();
+    Groups contactGroups;
 
-    for (ContactData ignored : before) {
-      if (contactGroups.size() == groups.size()) {
-        contactGroups = getRandomContact(before).getGroups();
-      } else {
-        return;
+    for (ContactData contact : before) {
+      contactGroups = contact.getGroups();
+      if (contactGroups.size() != groups.size()) {
+       return;
       }
     }
 

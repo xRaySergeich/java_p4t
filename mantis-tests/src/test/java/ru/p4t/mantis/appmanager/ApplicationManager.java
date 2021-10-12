@@ -16,6 +16,7 @@ public class ApplicationManager {
 
   private WebDriver wd;
   private final String browser;
+  private RegistrationHelper registrationHelper;
 
   public ApplicationManager(String browser) {
 
@@ -29,30 +30,14 @@ public class ApplicationManager {
 
     properties.load(new FileReader(String.format("src/test/resources/%s.properties", target)));
 
-    switch (browser) {
-      case BrowserType.FIREFOX:
-        wd = new FirefoxDriver();
-        break;
-      case BrowserType.CHROME:
-        System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
-        wd = new ChromeDriver();
-        break;
-      case BrowserType.IE:
-        System.setProperty("webdriver.ie.driver", "C:\\tools\\IEDriverServer_Win32_3.150.2\\IEDriverServer.exe");
-        wd = new InternetExplorerDriver();
-        wd.manage().window().maximize();
 
-        break;
-    }
-
-    wd.manage().deleteAllCookies();
-    wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-    wd.get(properties.getProperty("web.baseUrl"));
   }
 
 
   public void stop() {
-    wd.quit();
+    if (wd != null) {
+      wd.quit();
+    }
   }
 
   public HttpSession newSession() {
@@ -61,5 +46,37 @@ public class ApplicationManager {
 
   public String getProperty(String key) {
     return properties.getProperty(key);
+  }
+
+  public RegistrationHelper registration() {
+    if (registrationHelper == null) {
+      registrationHelper = new RegistrationHelper(this);
+    }
+    return registrationHelper;
+  }
+
+  public WebDriver getDriver() {
+    if (wd == null) {
+      switch (browser) {
+        case BrowserType.FIREFOX:
+          wd = new FirefoxDriver();
+          break;
+        case BrowserType.CHROME:
+          System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
+          wd = new ChromeDriver();
+          break;
+        case BrowserType.IE:
+          System.setProperty("webdriver.ie.driver", "C:\\tools\\IEDriverServer_Win32_3.150.2\\IEDriverServer.exe");
+          wd = new InternetExplorerDriver();
+          wd.manage().window().maximize();
+
+          break;
+      }
+      wd.manage().deleteAllCookies();
+      wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+      wd.get(properties.getProperty("web.baseUrl"));
+
+    }
+    return wd;
   }
 }

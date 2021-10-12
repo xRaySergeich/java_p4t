@@ -1,7 +1,5 @@
 package ru.p4t.mantis.tests;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.lanwen.verbalregex.VerbalExpression;
 import ru.p4t.mantis.model.MailMessage;
@@ -35,7 +33,7 @@ public class RegistrationTest extends TestBase {
 
     app.registration().start(user, email);
     //List<MailMessage> mailMessages = app.mail().waitForMail(2, 10000);
-    List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000);
+    List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000, 0);
 
     String confirmationLink = findConfirmationLink(mailMessages, email);
     app.registration().finish(confirmationLink, password);

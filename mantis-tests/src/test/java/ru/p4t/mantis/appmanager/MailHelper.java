@@ -4,16 +4,19 @@ import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 import ru.p4t.mantis.model.MailMessage;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MailHelper {
   private ApplicationManager app;
   private final Wiser wiser;
+  static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 
   public MailHelper(ApplicationManager app) {
     this.app = app;
@@ -38,7 +41,7 @@ public class MailHelper {
   public static MailMessage toModelMail(WiserMessage m) {
     try {
       MimeMessage mm = m.getMimeMessage();
-      return new MailMessage(mm.getAllRecipients()[0].toString(), (String) mm.getContent());
+      return new MailMessage(mm.getAllRecipients()[0].toString(), (String) mm.getContent(), LocalDateTime.parse(mm.getHeader("Date")[0], formatter));
     } catch (MessagingException | IOException e) {
       e.printStackTrace();
       return null;

@@ -7,8 +7,11 @@ import javax.mail.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class JamesHelper {
@@ -22,6 +25,8 @@ public class JamesHelper {
   private Session mailSession;
   private Store store;
   private String mailserver;
+
+  static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 
   public JamesHelper(ApplicationManager app) {
     this.app = app;
@@ -139,11 +144,11 @@ public class JamesHelper {
     return folder;
   }
 
-  public List<MailMessage> waitForMail(String username, String password, long timeout) throws MessagingException {
+  public List<MailMessage> waitForMail(String username, String password, long timeout, int emailCount) throws MessagingException {
     long now = System.currentTimeMillis();
     while (System.currentTimeMillis() < now + timeout) {
       List<MailMessage> allMail = getAllMail(username, password);
-      if (allMail.size() > 0) {
+      if (allMail.size() > emailCount) {
         return allMail;
       }
       try {
@@ -164,7 +169,7 @@ public class JamesHelper {
 
   public static MailMessage toModelMail(Message m) {
     try {
-      return new MailMessage(m.getAllRecipients()[0].toString(), (String) m.getContent());
+      return new MailMessage(m.getAllRecipients()[0].toString(), (String) m.getContent(), LocalDateTime.parse(m.getHeader("Date")[0], formatter));
     } catch (MessagingException e) {
       e.printStackTrace();
       return null;

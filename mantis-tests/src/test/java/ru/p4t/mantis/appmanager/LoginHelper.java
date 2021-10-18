@@ -20,4 +20,13 @@ public class LoginHelper extends HelperBase{
     click(By.cssSelector("input[type='submit']"));
     assertTrue(wd.findElement(By.xpath("//ul[@class='breadcrumb']//a")).getText().equals(username));
   }
+
+  public void loginAsAdmin() {
+    login(app.getProperty("web.adminLogin"), app.getProperty("web.adminPassword"));
+  }
+
+  public void logOut() {
+    wd.get(app.getProperty("web.baseUrl") + "/logout_page.php");
+  }
+
 }

@@ -1,5 +1,10 @@
 package ru.p4t.rest;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class Issue {
 
     private int id;

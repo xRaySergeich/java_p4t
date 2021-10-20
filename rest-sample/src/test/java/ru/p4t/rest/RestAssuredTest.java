@@ -4,20 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Set;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 
-public class RestAssuredTest {
-
-    @BeforeClass
-    public void init() {
-        authentication = basic("288f44776e7bec4bf44fdfeb1e646490", "");
-    }
+public class RestAssuredTest extends SuperTest {
 
     @Test
     public void testCreateIssue() {

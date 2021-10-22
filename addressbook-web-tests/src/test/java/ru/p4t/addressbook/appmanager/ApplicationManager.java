@@ -1,13 +1,17 @@
 package ru.p4t.addressbook.appmanager;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -36,20 +40,27 @@ public class ApplicationManager {
 
     dbHelper = new DbHelper();
 
-    switch (browser) {
-      case BrowserType.FIREFOX:
-        wd = new FirefoxDriver();
-        break;
-      case BrowserType.CHROME:
-        System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
-        wd = new ChromeDriver();
-        break;
-      case BrowserType.IE:
-        System.setProperty("webdriver.ie.driver", "C:\\tools\\IEDriverServer_Win32_3.150.2\\IEDriverServer.exe");
-        wd = new InternetExplorerDriver();
-        wd.manage().window().maximize();
+    if ("".equals(properties.getProperty("selenium.server"))) {
+      switch (browser) {
+        case BrowserType.FIREFOX:
+          wd = new FirefoxDriver();
+          break;
+        case BrowserType.CHROME:
+          System.setProperty("webdriver.chrome.driver", "C:\\tools\\chromedriver_win32\\chromedriver.exe");
+          wd = new ChromeDriver();
+          break;
+        case BrowserType.IE:
+          System.setProperty("webdriver.ie.driver", "C:\\tools\\IEDriverServer_Win32_3.150.2\\IEDriverServer.exe");
+          wd = new InternetExplorerDriver();
+          wd.manage().window().maximize();
 
-        break;
+          break;
+      }
+    }
+    else {
+      DesiredCapabilities capabilities = new DesiredCapabilities();
+      capabilities.setBrowserName(browser);
+      wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")), capabilities);
     }
 
     wd.manage().deleteAllCookies();

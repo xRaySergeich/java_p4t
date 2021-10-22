@@ -1,0 +1,157 @@
+[
+  {
+    "firstname": "Zorian 0",
+    "middlename": "Viktorovich 0",
+    "lastname": "Kazinsky 0",
+    "nickname": "Nutcracker 0",
+    "company": "Wizards, inc 0",
+    "title": "Some title 0",
+    "address": "Some address 0",
+    "homePhone": "99922211 0",
+    "mobilePhone": "77718882 0",
+    "workPhone": "937557728 0",
+    "fax": "993949587 0",
+    "email": "address10@ex.com",
+    "email2": "address20@ex.com",
+    "email3": "address30@ex.com",
+    "homepage": "http://localhost0",
+    "bday": "10",
+    "bmonth": "August",
+    "byear": "1955",
+    "aday": "6",
+    "amonth": "April",
+    "ayear": "1999",
+    "groups": [
+      {
+        "name": "test1"
+      }
+    ],
+    "address2": "Some secondary address 0",
+    "phone2": "8888999990",
+    "notes": "Extremely important notes for test 0"
+  },
+  {
+    "firstname": "Zorian 1",
+    "middlename": "Viktorovich 1",
+    "lastname": "Kazinsky 1",
+    "nickname": "Nutcracker 1",
+    "company": "Wizards, inc 1",
+    "title": "Some title 1",
+    "address": "Some address 1",
+    "homePhone": "99922211 1",
+    "mobilePhone": "77718882 1",
+    "workPhone": "937557728 1",
+    "fax": "993949587 1",
+    "email": "address11@ex.com",
+    "email2": "address21@ex.com",
+    "email3": "address31@ex.com",
+    "homepage": "http://localhost1",
+    "bday": "10",
+    "bmonth": "August",
+    "byear": "1955",
+    "aday": "6",
+    "amonth": "April",
+    "ayear": "1999",
+    "groups": [
+      {
+        "name": "test1"
+      }
+    ],
+    "address2": "Some secondary address 1",
+    "phone2": "8888999991",
+    "notes": "Extremely important notes for test 1"
+  },
+  {
+    "firstname": "Zorian 2",
+    "middlename": "Viktorovich 2",
+    "lastname": "Kazinsky 2",
+    "nickname": "Nutcracker 2",
+    "company": "Wizards, inc 2",
+    "title": "Some title 2",
+    "address": "Some address 2",
+    "homePhone": "99922211 2",
+    "mobilePhone": "77718882 2",
+    "workPhone": "937557728 2",
+    "fax": "993949587 2",
+    "email": "address12@ex.com",
+    "email2": "address22@ex.com",
+    "email3": "address32@ex.com",
+    "homepage": "http://localhost2",
+    "bday": "10",
+    "bmonth": "August",
+    "byear": "1955",
+    "aday": "6",
+    "amonth": "April",
+    "ayear": "1999",
+    "groups": [
+      {
+        "name": "test1"
+      }
+    ],
+    "address2": "Some secondary address 2",
+    "phone2": "8888999992",
+    "notes": "Extremely important notes for test 2"
+  },
+  {
+    "firstname": "Zorian 3",
+    "middlename": "Viktorovich 3",
+    "lastname": "Kazinsky 3",
+    "nickname": "Nutcracker 3",
+    "company": "Wizards, inc 3",
+    "title": "Some title 3",
+    "address": "Some address 3",
+    "homePhone": "99922211 3",
+    "mobilePhone": "77718882 3",
+    "workPhone": "937557728 3",
+    "fax": "993949587 3",
+    "email": "address13@ex.com",
+    "email2": "address23@ex.com",
+    "email3": "address33@ex.com",
+    "homepage": "http://localhost3",
+    "bday": "10",
+    "bmonth": "August",
+    "byear": "1955",
+    "aday": "6",
+    "amonth": "April",
+    "ayear": "1999",
+    "groups": [
+      {
+        "name": "test1"
+      }
+    ],
+    "address2": "Some secondary address 3",
+    "phone2": "8888999993",
+    "notes": "Extremely important notes for test 3"
+  },
+  {
+    "firstname": "Zorian 4",
+    "middlename": "Viktorovich 4",
+    "lastname": "Kazinsky 4",
+    "nickname": "Nutcracker 4",
+    "company": "Wizards, inc 4",
+    "title": "Some title 4",
+    "address": "Some address 4",
+    "homePhone": "99922211 4",
+    "mobilePhone": "77718882 4",
+    "workPhone": "937557728 4",
+    "fax": "993949587 4",
+    "email": "address14@ex.com",
+    "email2": "address24@ex.com",
+    "email3": "address34@ex.com",
+    "homepage": "http://localhost4",
+    "bday": "10",
+    "bmonth": "August",
+    "byear": "1955",
+    "aday": "6",
+    "amonth": "April",
+    "ayear": "1999",
+    "groups": [
+      {
+        "name": "test1"
+      }
+    ],
+    "address2": "Some secondary address 4",
+    "phone2": "8888999994",
+    "notes": "Extremely important notes for test 4"
+  }
+]
